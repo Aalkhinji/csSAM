@@ -1,0 +1,58 @@
+---
+title: "csSAM"
+author: "Ben, Aisha, and Sara"
+date: "Tuesday, March 10, 2015"
+output: ioslides_presentation
+---
+
+##   
+
+Cell type-specific gene expression differences in complex tissues.
+
+Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T, Sarwal MM, Davis MM, Butte AJ.
+
+## Outline
+
+- Description of cell type-specific significance analysis of microarrays (csSAM) for analyzing differential gene expression
+
+- Validation of csSAM with predesigned mixtures
+
+- Application of csSAM to whole-blood gene expression datasets
+
+
+## Background
+
+-  Traditional microarray analysis methods do not account for sample cell-type composition (are the changes in gene expression due to physiological changes or differences in cell-type frequency?)
+-  Experimental methods for isolating subsets of tissue are expensive and may affect gene expression
+-  A statistics based approach is to quantify the relative abundance of each cell type in each sample, then deconvolve and compare cell type-specific average expression profiles
+
+
+## Overview of csSAM
+
+(Insert Figure 1)
+
+
+## Validation of csSAM
+
+- Analysis of measured pure tissue and measured mixtures
+- High correlation observed between measured and reconstituted mixtures (r > 0.95) suggested that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes
+- Tested using the measured mixture samples
+
+
+## Several slides leading up to Figure 2...  
+
+
+## Application of csSAM to whole-blood gene expression array data
+
+- Array data from 24 kidney transplant patients, 15 experiencing acute rejection, 9 stable
+- White blood cell subsets from Coulter counter measurements (lymphocytes, monocytes, neutrophils, eosinophils, basophils)
+- Differential expression using significance analysis of microarrays (SAM) revealed no differentially expressed genes between the two groups (FDR 0.3)
+
+
+## More info and several slides leading up to Figure 3...  
+
+
+## Conclusions 
+
+- csSAM helps maximize the information obtained from a heterogeneous gene expression assay
+- Limitations
