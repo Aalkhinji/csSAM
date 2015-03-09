@@ -9,7 +9,7 @@ output: ioslides_presentation
 
 Cell type-specific gene expression differences in complex tissues.
 
-Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T, Sarwal MM, Davis MM, Butte AJ.
+Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T, Sarwal MM, Davis MM, Butte AJ.  Nature Methods 7, 287 - 289 (2010) 
 
 ## Outline
 
@@ -22,9 +22,11 @@ Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T,
 
 ## Background
 
--  Traditional microarray analysis methods do not account for sample cell-type composition (are the changes in gene expression due to physiological changes or differences in cell-type frequency?)
--  Experimental methods for isolating subsets of tissue are expensive and may affect gene expression
--  A statistics based approach is to quantify the relative abundance of each cell type in each sample, then deconvolve and compare cell type-specific average expression profiles
+- Traditional microarray analysis methods do not account for sample cell-type composition (are the changes in gene expression due to physiological changes or differences in cell-type frequency?)
+
+- Experimental methods for isolating subsets of tissue are expensive and may affect gene expression
+
+- A statistics based approach is to quantify the relative abundance of each cell type in each sample, then deconvolve and compare cell type-specific average expression profiles
 
 
 ## Overview of csSAM
@@ -34,159 +36,26 @@ Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T,
 
 ## Validation of csSAM
 
-- Analysis of measured pure tissue and measured mixtures
+- Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat
+
 - High correlation observed between measured and reconstituted mixtures (r > 0.95) suggested that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes
+
 - Tested using the measured mixture samples
 
 
 ## Application of csSAM to whole-blood gene expression array data
 
-- Array data from 24 kidney transplant patients, 15 experiencing acute rejection, 9 stable
+- Array data from 24 kidney transplant patients -- 15 experiencing acute rejection, 9 stable
+
 - White blood cell subsets from Coulter counter measurements (lymphocytes, monocytes, neutrophils, eosinophils, basophils)
+
 - Differential expression using significance analysis of microarrays (SAM) revealed no differentially expressed genes between the two groups (FDR 0.3)
 
 
-## Statistical deconvolution of expression profiles
-
-- Measure expression $X$ of genes in complex tissue with $k$ cell types from $n$ samples.
-
-- Known cell-type proportions $w$
-
-- Deconvolve $h$ from $w$ with linear regression
-
-$$
-X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
-$$
-
-$i$ = sample, $j$ = gene, $k$ = cell type, $e_{ij}$ = random error
-
-
-##FIGURE 2 STUFF?
-
-
-## SAM
-
-- SAM (Significance Analysis of Microarrays)
-
-Regularized t-test: 
-$$ 
-t_g=\frac{\left(\bar{y}_{1g}-\bar{y}_{2g}\right)} {\sqrt{s^2_{1g}/R_1+s^2_{2g}/R_2+c}}
-$$
-c is positive constant to regularize variance estimate.
-
--csSAM: combine statistical deconvolution with SAM
-
-## Getting data with GEOquery
-        
-```{r, cache=TRUE}
-gdsKidney <- getGEO("GSE20300", destdir = getwd())
-gdsKidney <- gdsKidney[[1]]
-        sanitize_kidney_pdata <- function(pd) {
-          keepCols <- c("characteristics_ch1", "title") 
-          pd <- pd[, keepCols]
-          colnames(pd) <- c("state", "number") 
-          pd$state <- tolower(gsub("transplant state: ", "", pd$state))
-          pd$state[which(pd$state == "acute rejection")] <- gsub(" rejection", "", pd$state[which(pd$state == "acute rejection")])
-          pd$number <- gsub(" (.+)", "", pd$number)
-          pd$number <- as.numeric(gsub(".+-P", "", pd$number))
-          return(pd)
-        }
-
-        kidneyProbeMat <- sanitize_kidney_pdata(pData(gdsKidney))
-        sampleOrder <- with(kidneyProbeMat, order(state, number))
-        kidneyProbeMat <- kidneyProbeMat[sampleOrder, ]
-```
-        
-        
-## Extracting gene expression
-
-```{r, cache=TRUE}
-        ## matrix of kidney data, ordered by sample
-        kidneyExprMat <- exprs(gdsKidney)
-        kidneyExprMat <- kidneyExprMat[, sampleOrder]
-```
-        
-        
-## Subsetting 5000 most variables genes
-
-```{r, cache=TRUE}
-        ## 5000 most variable genes across samples
-        geneExprVar <- apply(kidneyExprMat, 1, var)
-        geneExprOrderedByVar <- kidneyExprMat[order(geneExprVar, decreasing=TRUE), ]
-        top5000Expr <- geneExprOrderedByVar[1:5000, ]
-```
-        
-        
-## Matrix of cell frequency
-
-```{r, cache=TRUE, echo=FALSE}
-        ## Matrix of cell type proportion found in supplementary data
-        kidneyCellFreq <- rbind(c(38, 47.5, 12.4, 1.4, 0.8),
-                                c(70.7, 17.1, 11.8, 0.1, 0.3),
-                                c(62.1, 20.3, 14.6, 2.5, 0.5),
-                                c(90.5, 2, 4.8, 2.4, 0.3),
-                                c(65.8, 25, 7.3, 1.4, 0.5),
-                                c(39.2, 37.1, 14.1, 9.2, 0.4),
-                                c(89.4, 6.3, 3.7, 0.1, 0.5),
-                                c(91.3, 1.6, 4.6, 2.5, 0),
-                                c(55.4, 31.3, 8.4, 4.6, 0.3),
-                                c(14.5, 61.5, 21.9, 1.3, 0.8),
-                                c(81, 17.9, 0.4, 0.6, 0.1),
-                                c(53.8, 37.2, 8.4, 0.4, 0.2),
-                                c(59.9, 32.6, 5.8, 1.5, 0.3),
-                                c(77, 18.5, 4.1, 0.2, 0.2),
-                                c(47.8, 39.7, 6.6, 4.7, 1.2),
-                                c(76.4, 19.4, 3.6, 0.4, 0.2),
-                                c(58.5, 28, 9.6, 3.3, 0.6),
-                                c(60.5, 27.8, 8.3, 2.8, 0.6),
-                                c(43.6, 44, 5.8, 6.5, 0),
-                                c(63.4, 23.1, 11.6, 1.6, 0.3),
-                                c(50.1, 30.6, 18.1, 1.2, 0),
-                                c(54.8, 15.2, 27.8, 1.6, 0.6),
-                                c(47.7, 37.8, 12.1, 1.6, 0.8),
-                                c(30.4, 52, 9.4, 7.7, 0.5))
-        colnames(kidneyCellFreq) <- c("neutrophils", "lymphocytes", "monocytes", "eosinophils", "basophils")
-        write.table(kidneyCellFreq, "./kidneyCellFreq.txt", row.names=FALSE)
-```
-        
-```{r, cache=TRUE}
-        ## read in matrix of cell type proportion and change values from % into proportion
-        kidneyCellFreq <- read.table("./kidneyCellFreq.txt", header=TRUE)
-        kidneyCellFreq <- kidneyCellFreq / 100 / 100
-```
-        
-        
-## csSAM
-
-        Need vector of group association for each sample
-```{r, cache=TRUE}
-        ## group label (stable=1, acute=2)
-        patientGroups <- ifelse(kidneyProbeMat$state == "stable", 1, 2)
-        
-
-        ## csSAM
-        wrapper.output <- csSamWrapper(t(top5000Expr), kidneyCellFreq, patientGroups)
-```
-
-## False discovery rate plots
-![plot](./csSAMout.jpg)
-INSERT PLOT ABOVE (CHECK FILE NAME)
-
-
-## Conclusions 
-
-- csSAM helps maximize the information obtained from a heterogeneous gene expression assay
-- Limitations include probe saturiation and cross-hybridization, changes in cellular expression of genes from changes in cell subset composition, known cellular composition
 
 
 
-
-
-
-
-## From previous...
-
-
+##
         Aisha:
         ==========================================================================
 The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes. 
@@ -371,3 +240,150 @@ gdsRat <- gdsRat[[1]]
         qplot(pureBrainExpr, deconvBrainExpr, geom = "hex", binwidth = c(0.1, 0.1), xlab="pure tissue", ylab="deconvolved", main="lung")  
 ```
         correlation = `r cor(pureLungExpr, deconvLungExpr)`
+
+
+
+## SAM
+
+- SAM (Significance Analysis of Microarrays)
+
+Regularized t-test: 
+$$ 
+t_g=\frac{\left(\bar{y}_{1g}-\bar{y}_{2g}\right)} {\sqrt{s^2_{1g}/R_1+s^2_{2g}/R_2+c}}
+$$
+c is positive constant to regularize variance estimate.
+
+-csSAM: combine statistical deconvolution with SAM
+
+## Getting data with GEOquery
+        
+```{r, cache=TRUE}
+gdsKidney <- getGEO("GSE20300", destdir = getwd())
+gdsKidney <- gdsKidney[[1]]
+        sanitize_kidney_pdata <- function(pd) {
+          keepCols <- c("characteristics_ch1", "title") 
+          pd <- pd[, keepCols]
+          colnames(pd) <- c("state", "number") 
+          pd$state <- tolower(gsub("transplant state: ", "", pd$state))
+          pd$state[which(pd$state == "acute rejection")] <- gsub(" rejection", "", pd$state[which(pd$state == "acute rejection")])
+          pd$number <- gsub(" (.+)", "", pd$number)
+          pd$number <- as.numeric(gsub(".+-P", "", pd$number))
+          return(pd)
+        }
+
+        kidneyProbeMat <- sanitize_kidney_pdata(pData(gdsKidney))
+        sampleOrder <- with(kidneyProbeMat, order(state, number))
+        kidneyProbeMat <- kidneyProbeMat[sampleOrder, ]
+```
+        
+        
+## Extracting gene expression
+
+```{r, cache=TRUE}
+        ## matrix of kidney data, ordered by sample
+        kidneyExprMat <- exprs(gdsKidney)
+        kidneyExprMat <- kidneyExprMat[, sampleOrder]
+```
+        
+        
+## Subsetting 5000 most variables genes
+
+```{r, cache=TRUE}
+        ## 5000 most variable genes across samples
+        geneExprVar <- apply(kidneyExprMat, 1, var)
+        geneExprOrderedByVar <- kidneyExprMat[order(geneExprVar, decreasing=TRUE), ]
+        top5000Expr <- geneExprOrderedByVar[1:5000, ]
+```
+        
+        
+## Matrix of cell frequency
+
+```{r, cache=TRUE, echo=FALSE}
+        ## Matrix of cell type proportion found in supplementary data
+        kidneyCellFreq <- rbind(c(38, 47.5, 12.4, 1.4, 0.8),
+                                c(70.7, 17.1, 11.8, 0.1, 0.3),
+                                c(62.1, 20.3, 14.6, 2.5, 0.5),
+                                c(90.5, 2, 4.8, 2.4, 0.3),
+                                c(65.8, 25, 7.3, 1.4, 0.5),
+                                c(39.2, 37.1, 14.1, 9.2, 0.4),
+                                c(89.4, 6.3, 3.7, 0.1, 0.5),
+                                c(91.3, 1.6, 4.6, 2.5, 0),
+                                c(55.4, 31.3, 8.4, 4.6, 0.3),
+                                c(14.5, 61.5, 21.9, 1.3, 0.8),
+                                c(81, 17.9, 0.4, 0.6, 0.1),
+                                c(53.8, 37.2, 8.4, 0.4, 0.2),
+                                c(59.9, 32.6, 5.8, 1.5, 0.3),
+                                c(77, 18.5, 4.1, 0.2, 0.2),
+                                c(47.8, 39.7, 6.6, 4.7, 1.2),
+                                c(76.4, 19.4, 3.6, 0.4, 0.2),
+                                c(58.5, 28, 9.6, 3.3, 0.6),
+                                c(60.5, 27.8, 8.3, 2.8, 0.6),
+                                c(43.6, 44, 5.8, 6.5, 0),
+                                c(63.4, 23.1, 11.6, 1.6, 0.3),
+                                c(50.1, 30.6, 18.1, 1.2, 0),
+                                c(54.8, 15.2, 27.8, 1.6, 0.6),
+                                c(47.7, 37.8, 12.1, 1.6, 0.8),
+                                c(30.4, 52, 9.4, 7.7, 0.5))
+        colnames(kidneyCellFreq) <- c("neutrophils", "lymphocytes", "monocytes", "eosinophils", "basophils")
+        write.table(kidneyCellFreq, "./kidneyCellFreq.txt", row.names=FALSE)
+```
+        
+```{r, cache=TRUE}
+        ## read in matrix of cell type proportion and change values from % into proportion
+        kidneyCellFreq <- read.table("./kidneyCellFreq.txt", header=TRUE)
+        kidneyCellFreq <- kidneyCellFreq / 100 / 100
+```
+        
+        
+## csSAM
+
+        Need vector of group association for each sample
+```{r, cache=TRUE}
+        ## group label (stable=1, acute=2)
+        patientGroups <- ifelse(kidneyProbeMat$state == "stable", 1, 2)
+        
+
+        ## csSAM
+        wrapper.output <- csSamWrapper(t(top5000Expr), kidneyCellFreq, patientGroups)
+```
+
+## False discovery rate plots
+
+![plot](./csSAMout.pdf)
+INSERT PLOT ABOVE (CHECK FILE NAME)
+
+
+
+## Conclusions 
+
+- csSAM localizes identified differential expression to a particular cellular context
+
+- The methodology can be used with microarray analysis of any heterogeneous tissue and can be applied to other types of molecular measurements
+
+- Limitations include potential inaccuracies due to probe saturation and cross-hybridization, genes whose cellular expression changes in response to the changes in the cell subset composition of their microenvironment
+
+
+
+
+
+
+
+
+        
+        
+        
+## To include?  
+
+## Statistical deconvolution of expression profiles
+
+- Measure expression $X$ of genes in complex tissue with $k$ cell types from $n$ samples.
+
+- Known cell-type proportions $w$
+
+- Deconvolve $h$ from $w$ with linear regression
+
+$$
+X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
+$$
+
+$i$ = sample, $j$ = gene, $k$ = cell type, $e_{ij}$ = random error
