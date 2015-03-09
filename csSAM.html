@@ -92,9 +92,7 @@
           </hgroup>
   </slide>
 
-<slide class=''><hgroup><h2></h2></hgroup><article  id="section">
-
-<p>Cell type-specific gene expression differences in complex tissues.</p>
+<slide class=''><hgroup><h2>Cell type-specific gene expression differences in complex tissues</h2></hgroup><article  id="cell-type-specific-gene-expression-differences-in-complex-tissues">
 
 <p>Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T, Sarwal MM, Davis MM, Butte AJ. Nature Methods 7, 287 - 289 (2010)</p>
 
@@ -118,10 +116,20 @@
 
 <img src='http://www.nature.com/nmeth/journal/v7/n4/images/nmeth.1439-F1.jpg' title=''/>
 
+</article></slide><slide class=''><hgroup><h2>Statistical deconvolution of cell type-specific expression profiles</h2></hgroup><article  id="statistical-deconvolution-of-cell-type-specific-expression-profiles">
+
+<p>\[
+X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
+\]</p>
+
+<p>\(X\) = expression \(i\) = sample \(j\) = gene \(w\) = cell type proportion \(k\) = cell type \(h\) = gene expression \(e\) = random error</p>
+
+<p>The model is fit by a standard least-squares regression of each column of \(X\) on \(W\) to yield cofficients in the corresponding column of \(H\)</p>
+
 </article></slide><slide class=''><hgroup><h2>Validation of csSAM</h2></hgroup><article  id="validation-of-cssam">
 
 <ul>
-<li><p>Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat</p></li>
+<li><p>Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat (Affymatrix RAE230-2 whole-genome expression arrays)</p></li>
 <li><p>High correlation observed between measured and reconstituted mixtures (r &gt; 0.95) suggested that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes</p></li>
 <li><p>Tested using the measured mixture samples</p></li>
 </ul>
@@ -129,15 +137,14 @@
 </article></slide><slide class=''><hgroup><h2>Application of csSAM to whole-blood gene expression array data</h2></hgroup><article  id="application-of-cssam-to-whole-blood-gene-expression-array-data">
 
 <ul>
-<li><p>Array data from 24 kidney transplant patients &#8211; 15 experiencing acute rejection, 9 stable</p></li>
+<li><p>Array data from 24 pediatric renal transplant patients &#8211; 15 experiencing acute rejection, 9 stable (whole blood, Affymatrix HGU133V2.0(+) whole-genome expression arrays)</p></li>
 <li><p>White blood cell subsets from Coulter counter measurements (lymphocytes, monocytes, neutrophils, eosinophils, basophils)</p></li>
 <li><p>Differential expression using significance analysis of microarrays (SAM) revealed no differentially expressed genes between the two groups (FDR 0.3)</p></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2></h2></hgroup><article  id="section-1">
+</article></slide><slide class=''><hgroup><h2></h2></hgroup><article  id="section">
 
-<pre >    Aisha:
-    ==========================================================================</pre>
+<pre >    ==========================================================================</pre>
 
 <p>The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes.</p>
 
@@ -439,23 +446,7 @@ t_g=\frac{\left(\bar{y}_{1g}-\bar{y}_{2g}\right)} {\sqrt{s^2_{1g}/R_1+s^2_{2g}/R
 <li><p>csSAM localizes identified differential expression to a particular cellular context</p></li>
 <li><p>The methodology can be used with microarray analysis of any heterogeneous tissue and can be applied to other types of molecular measurements</p></li>
 <li><p>Limitations include potential inaccuracies due to probe saturation and cross-hybridization, genes whose cellular expression changes in response to the changes in the cell subset composition of their microenvironment</p></li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>To include?</h2></hgroup><article  id="to-include">
-
-</article></slide><slide class=''><hgroup><h2>Statistical deconvolution of expression profiles</h2></hgroup><article  id="statistical-deconvolution-of-expression-profiles">
-
-<ul>
-<li><p>Measure expression \(X\) of genes in complex tissue with \(k\) cell types from \(n\) samples.</p></li>
-<li><p>Known cell-type proportions \(w\)</p></li>
-<li><p>Deconvolve \(h\) from \(w\) with linear regression</p></li>
-</ul>
-
-<p>\[
-X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
-\]</p>
-
-<p>\(i\) = sample, \(j\) = gene, \(k\) = cell type, \(e_{ij}\) = random error</p></article></slide>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>

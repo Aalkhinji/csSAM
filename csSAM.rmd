@@ -5,9 +5,7 @@ date: "Tuesday, March 10, 2015"
 output: ioslides_presentation
 ---
 
-##   
-
-Cell type-specific gene expression differences in complex tissues.
+## Cell type-specific gene expression differences in complex tissues
 
 Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T, Sarwal MM, Davis MM, Butte AJ.  Nature Methods 7, 287 - 289 (2010) 
 
@@ -34,9 +32,25 @@ Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T,
 ![fig1](http://www.nature.com/nmeth/journal/v7/n4/images/nmeth.1439-F1.jpg)
 
 
+## Statistical deconvolution of cell type-specific expression profiles
+
+$$
+X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
+$$
+
+$X$ = expression 
+$i$ = sample
+$j$ = gene
+$w$ = cell type proportion
+$k$ = cell type
+$h$ = gene expression
+$e$ = random error
+
+The model is fit by a standard least-squares regression of each column of $X$ on $W$ to yield cofficients in the corresponding column of $H$
+
 ## Validation of csSAM
 
-- Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat
+- Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat (Affymatrix RAE230-2 whole-genome expression arrays)
 
 - High correlation observed between measured and reconstituted mixtures (r > 0.95) suggested that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes
 
@@ -45,18 +59,14 @@ Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T,
 
 ## Application of csSAM to whole-blood gene expression array data
 
-- Array data from 24 kidney transplant patients -- 15 experiencing acute rejection, 9 stable
+- Array data from 24 pediatric renal transplant patients -- 15 experiencing acute rejection, 9 stable (whole blood, Affymatrix HGU133V2.0(+) whole-genome expression arrays)
 
 - White blood cell subsets from Coulter counter measurements (lymphocytes, monocytes, neutrophils, eosinophils, basophils)
 
 - Differential expression using significance analysis of microarrays (SAM) revealed no differentially expressed genes between the two groups (FDR 0.3)
 
-
-
-
-
 ##
-        Aisha:
+
         ==========================================================================
 The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes. 
 
@@ -364,24 +374,5 @@ gdsKidney <- gdsKidney[[1]]
 
 
 
+ 
 
-
-
-        
-        
-        
-## To include?  
-
-## Statistical deconvolution of expression profiles
-
-- Measure expression $X$ of genes in complex tissue with $k$ cell types from $n$ samples.
-
-- Known cell-type proportions $w$
-
-- Deconvolve $h$ from $w$ with linear regression
-
-$$
-X_{ij} = \sum\limits_{k=1}^K w_{ik}h_{kj} + e_{ij}
-$$
-
-$i$ = sample, $j$ = gene, $k$ = cell type, $e_{ij}$ = random error
