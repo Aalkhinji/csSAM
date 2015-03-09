@@ -93,8 +93,29 @@ Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler F, Perry NM, Hastie T,
         c is small positive constant to regularize variance estimate (median of all $S_g$).
         
         - csSAM: statistical deconvolution + SAM
-        
-        
+        Aisha:
+        ==========================================================================
+The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes. 
+
+**linear regression**
+>Linear regression 
+A linear regression fitting model used to the measured mixture samples by measuring  mixture ratios. For each tissue, a comparison of the estimated expression profile of each subset to the measured expression pattern in the pure tissue showed a high correlation. This is indicating that they could accurately deconvolute subset specific expression patterns for the majority of genes from whole-sample measurements.
+
+-To estimate the specificity and sensitivity of statistical deconvolution to detect differentially expressed genes, they compared deconvoluted and measured differences in gene expression between tissues. They compared the probe with abundance difference to a `gold standard' set of differentially expressed probes between tissues identified from the pure tissue sample measurements.
+
+-Receiver operating characteristic (ROC) curve analysis showed the detection of differentially expressed genes by statistical deconvolution to be both highly specific and sensitive with an area under the curve of 0.85 and greater.
+
+
+##csSAM 
+Using (csSAM) to human samples in a 24 kidney transplant recipients 15 with acute rejection  and 9 stable. Distinguishing five major cells lymphocytes, monocytes, neutrophils, eosinophils and basophils.
+![image](http://upload.wikimedia.org/wikipedia/commons/1/1f/Blausen_0909_WhiteBloodCells.png)
+
+
+
+<img src="http://upload.wikimedia.org/wikipedia/commons/1/1f/Blausen_0909_WhiteBloodCells.png" width=500>
+
+They observed high variation in relative cell-type frequency between individuals but detected no significant differences in cell-type frequencies between the two groups (P ≥ 0.24 for all cell types). Whole-blood differential expression analysis using a previously published method, significance analysis of microarrays (SAM)11, revealed no deferentially expressed genes between the two groups at a relatively permissive false discovery rate (FDR) of 0.3 and reduction in the number of multiple hypothesis tests.
+
 ##        Statistical Deconvolution of Gene Expression
         ========================================================
         - Measure expression $X$ of $p$ genes in complex tissue from $n$ patients.
