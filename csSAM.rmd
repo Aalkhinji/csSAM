@@ -370,6 +370,8 @@ gdsKidney <- gdsKidney[[1]]
 
 - Limitations include potential inaccuracies due to probe saturation and cross-hybridization, genes whose cellular expression changes in response to the changes in the cell subset composition of their microenvironment
 
+- csSAM has been updated to include added functionality to allow for switching between log-transformed and anti-log-transformed gene expression values when performing either the deconvolution or comparative expression steps 
+
 
 
 
