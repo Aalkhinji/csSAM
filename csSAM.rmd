@@ -349,9 +349,7 @@ gdsKidney <- gdsKidney[[1]]
 
 ## False discovery rate plots
 
-![plot](./csSAMout.pdf)
-INSERT PLOT ABOVE (CHECK FILE NAME)
-
+<img src="csSAMout.png" width=600>
 
 
 ## Conclusions 
