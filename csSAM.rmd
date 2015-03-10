@@ -51,6 +51,19 @@ The model is fit by a standard least-squares regression of each column of $X$ on
 ## Validation of csSAM
 
 - Analysis of measured pure tissue and measured mixtures from the brain, liver, and lung of a single rat (Affymatrix RAE230-2 whole-genome expression arrays)
+```{r, echo=FALSE}
+table1 <- matrix(c(100, 0, 0, 0, 100, 0, 0, 0, 100, 5, 25, 70, 70, 5, 25, 25, 70, 5, 70, 25, 5, 45, 45, 10, 55, 20, 25, 50, 30, 20, 55, 30, 15, 50, 40, 10, 60, 35, 5, 65, 34, 1),ncol=3,byrow=TRUE)
+colnames(table1) <- c("Liver","Brain","Lung")
+rownames (table1) <- c("Mix 1", "Mix 2", "Mix 3", "Mix 4","Mix 5","Mix 6","Mix 7","Mix 8","Mix 9","Mix 10","Mix 11","Mix 12","Mix 13","Mix 14")
+table1<-as.table(table1)
+table1
+```
+
+  
+## Validation of csSAM
+<img src="SF1.jpg" width=800>
+
+## Validation of csSAM
 
 - High correlation observed between measured and reconstituted mixtures (r > 0.95) suggested that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes
 
