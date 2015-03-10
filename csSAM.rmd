@@ -80,16 +80,24 @@ table1
 
 ##
 
-        ==========================================================================
-The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes. 
+  -The high correlation between the measured and reconstituted mixtures suggests that statistical deconvolution of tissue-specific expression profiles from complex tissue samples using linear regression should yield accurate expression estimates for most genes. 
 
-**linear regression**
->Linear regression 
-A linear regression fitting model used to the measured mixture samples by measuring  mixture ratios. For each tissue, a comparison of the estimated expression profile of each subset to the measured expression pattern in the pure tissue showed a high correlation. This is indicating that they could accurately deconvolute subset specific expression patterns for the majority of genes from whole-sample measurements.
+**linear regression model **
+- Fitting model to the measured mixture samples using mixture sample.
+- Comparing the estimated expression profile of each susbset in the pure tissue.
+- Measuring the accuracy of gene from swhole-sample measurements.
+
+
+## Statistical deconcovolution 
+
+![deconvolution](https://cloud.githubusercontent.com/assets/10427178/6568130/b0ebe4e2-c68f-11e4-864f-818d8ee4dd6c.png)
 
 -To estimate the specificity and sensitivity of statistical deconvolution to detect differentially expressed genes, they compared deconvoluted and measured differences in gene expression between tissues. They compared the probe with abundance difference to a `gold standard' set of differentially expressed probes between tissues identified from the pure tissue sample measurements.
 
--Receiver operating characteristic (ROC) curve analysis showed the detection of differentially expressed genes by statistical deconvolution to be both highly specific and sensitive with an area under the curve of 0.85 and greater.
+## Receiver operating characteristic (ROC)
+- The analysis showed the detection of differentially expressed genes by statistical deconvolution to be both highly specific and sensitive with an area under the curve of 0.85 and greater.
+
+![roc figure](https://cloud.githubusercontent.com/assets/10427178/6567134/c8b7e0b8-c67f-11e4-899f-408c0d871884.png width="500")    
 
 
 ##csSAM 
@@ -243,8 +251,8 @@ gdsRat <- gdsRat[[1]]
 ```{r}
 #install.packages("hexbin")
  # library(hexbin)
-
-        qplot(pureLiverExpr, deconvLiverExpr, geom = "hex", binwidth = c(0.1, 0.1), xlab="pure tissue", ylab="deconvolved", main="liver") 
+```{r}
+         qplot(pureLiverExpr, deconvLiverExpr, aes(x = pureLiverExpr),geom = "hex", main="liver")
 ```
         correlation = `r cor(pureLiverExpr, deconvLiverExpr)`
         
@@ -252,7 +260,7 @@ gdsRat <- gdsRat[[1]]
 ##        Density Plot of Deconvolved VS Pure Tissue (Brain)
         ========================================================
 ```{r}
-        qplot(pureBrainExpr, deconvBrainExpr, geom = "hex", binwidth = c(0.1, 0.1), xlab="pure tissue", ylab="deconvolved", main="brain")  
+        qplot(pureBrainExpr, deconvBrainExpr, aes(x = pureBrain,geom = "hex", main="brain")
 ```
         correlation = `r cor(pureBrainExpr, deconvBrainExpr)`
         
@@ -260,7 +268,7 @@ gdsRat <- gdsRat[[1]]
 ##        Density Plot of Deconvolved VS Pure Tissue (Lung)
         ========================================================
 ```{r}
-        qplot(pureBrainExpr, deconvBrainExpr, geom = "hex", binwidth = c(0.1, 0.1), xlab="pure tissue", ylab="deconvolved", main="lung")  
+        qplot(pureLungExpr, deconvLungExpr, aes(x = pureLungExpr),geom = "hex", main="Lung")  
 ```
         correlation = `r cor(pureLungExpr, deconvLungExpr)`
 
